@@ -10,16 +10,34 @@
 
     <div id='location'>-</div>
     <div id='temperature'>-</div>
-
+    <img id='icon' />
     <script>
         // pull the weather from the weahter network API
         const geoRegion = '45.06964/-81.43496/42.27502/-77.55630'
         const api = `https://www.theweathernetwork.com/ca/api/maps/regional/9/${geoRegion}`;
 
-        const apiResult = fetch( api ).then( (result)=>result.json() );
+        async function fetchWeather( api ){
+            console.log( `about to fetch the weather` );
 
-        console.log( `fetching weather: `, apiResult );
+            const result = await fetch( api ).then( (result)=>result.json() )
+            
+            // WEB ACCESS | FILE ACCESS | DATABASE ACCESS | TIMEOUT
+            // --> ASYNCRONOUSLY
+            // find result for toronto
+            result.forEach( function ( cityInfo ){
+                if( cityInfo.name=='Hamilton' ){
+                    document.querySelector('#location').textContent = cityInfo.name;
+                    document.querySelector('#temperature').textContent = cityInfo.temp_c;
 
+                    document.querySelector('#icon').src = 
+                        `https://s1.twnmm.com/images/en_ca/icons/wxicons_medium/${cityInfo.icon}.png`;
+                    
+                }
+            })
+            console.log( `starting fetching weather: `, result );
+        }
+
+        fetchWeather( api );
     </script>
 </body>
 </html>
