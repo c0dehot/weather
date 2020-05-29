@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Weather Forecast</h1>
+
+    <div id='location'>-</div>
+    <div id='temperature'>-</div>
+
+    <script>
+        // pull the weather from the weahter network API
+        const geoRegion = '45.06964/-81.43496/42.27502/-77.55630'
+        const api = `https://www.theweathernetwork.com/ca/api/maps/regional/9/${geoRegion}`;
+
+        const apiResult = fetch( api ).then( (result)=>result.json() );
+
+        console.log( `fetching weather: `, apiResult );
+
+    </script>
+</body>
+</html>
