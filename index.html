@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <script src='https://code.jquery.com/jquery-3.5.1.min.js'></script>
 </head>
 <body>
     <h1>Weather Forecast</h1>
@@ -23,15 +24,9 @@
         const geoRegion = '45.06964/-81.43496/42.27502/-77.55630'
         const api = `https://www.theweathernetwork.com/ca/api/maps/regional/9/${geoRegion}`;
 
-        async function fetchWeather( api ){
-            console.log( `about to fetch the weather` );
-
-            // WEB ACCESS | FILE ACCESS | DATABASE ACCESS | TIMEOUT
-            // --> ASYNCRONOUSLY
-            const result = await fetch( api ).then( result=>result.json() )
-
+        function displayWeather( weatherList ){
             // find result for toronto
-            result.forEach( function ( cityInfo ){
+            weatherList.forEach( function ( cityInfo ){
                 if( cityInfo.name=='Toronto' ){
                     document.querySelector('#location').textContent = cityInfo.name;
                     document.querySelector('#temperature').textContent = cityInfo.temp_c;
@@ -41,6 +36,16 @@
                     
                 }
             })
+        }
+
+        async function fetchWeather( api ){
+            console.log( `about to fetch the weather` );
+
+            // WEB ACCESS | FILE ACCESS | DATABASE ACCESS | TIMEOUT
+            // --> ASYNCRONOUSLY
+            const result = await fetch( api ).then( result=>result.json() )
+            displayWeather( result );
+           
             console.log( `fetch weather result: `, result );
 
             // now fetch the video playlist
@@ -54,7 +59,22 @@
 
         }
 
+        // METHOD #1: using await (most recent method, my recommend)        
         fetchWeather( api );
+
+        // // METHOD #2: using then
+        // fetch( api )
+        //     .then( result=>result.json() )
+        //     .then( displayWeather );
+
+        // METHOD #3: using jQuery
+        // --> 
+        // $( document ).ready(function() {
+        //     $.ajax({ 
+        //     url: api,
+        //     method: 'GET' })
+        //     .then( displayWeather );
+        // });
     </script>
 </body>
 </html>
