@@ -11,6 +11,13 @@
     <div id='location'>-</div>
     <div id='temperature'>-</div>
     <img id='icon' />
+
+    <hr />
+    <video width="640" height="480" controls autoplay>
+        <source id='videoSource' src="" type="video/webm">
+        Sorry, your browser doesn't support embedded videos.
+    </video>
+
     <script>
         // pull the weather from the weahter network API
         const geoRegion = '45.06964/-81.43496/42.27502/-77.55630'
@@ -19,13 +26,13 @@
         async function fetchWeather( api ){
             console.log( `about to fetch the weather` );
 
-            const result = await fetch( api ).then( (result)=>result.json() )
-            
             // WEB ACCESS | FILE ACCESS | DATABASE ACCESS | TIMEOUT
             // --> ASYNCRONOUSLY
+            const result = await fetch( api ).then( result=>result.json() )
+
             // find result for toronto
             result.forEach( function ( cityInfo ){
-                if( cityInfo.name=='Hamilton' ){
+                if( cityInfo.name=='Toronto' ){
                     document.querySelector('#location').textContent = cityInfo.name;
                     document.querySelector('#temperature').textContent = cityInfo.temp_c;
 
@@ -34,7 +41,17 @@
                     
                 }
             })
-            console.log( `starting fetching weather: `, result );
+            console.log( `fetch weather result: `, result );
+
+            // now fetch the video playlist
+            const playlistUrl = 'https://www.theweathernetwork.com/ca/api/videodata/getplaylistbyid?playlistID=1661352055853131534&noofvideosPerPlaylist=50&playlistStartsAt=0&placecode=caon0230'
+            const playlistResult = await fetch( playlistUrl ).then( result=>result.json() )
+            console.log( ` attempting to play video list #1: `, playlistResult.videos[0].httpURL );
+            // console.log( `got our video playlist: `, playlistResult );
+
+            // const videoUrl = 'https://interactive-examples.mdn.mozilla.net/media/examples/flower.webm';
+            // document.querySelector('#videoSource').src = videoUrl;
+
         }
 
         fetchWeather( api );
